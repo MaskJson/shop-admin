@@ -136,12 +136,96 @@ export default [
           icon: 'ios-settings'
         }
       },
+      // {
+      //   path: 'order-coupon',
+      //   name: 'order-coupon',
+      //   component: () => import('@/view/order/order-coupon/OrderCoupon.vue'),
+      //   meta: {
+      //     title: '优惠券',
+      //     notCache: true,
+      //     icon: 'ios-settings'
+      //   }
+      // },
+    ]
+  },
+  {
+    path: '/product',
+    name: 'product',
+    component: Main,
+    meta: {
+      title: '商品管理',
+      notCache: true,
+      icon: 'ios-settings'
+    },
+    children: [
       {
-        path: 'order-coupon',
-        name: 'order-coupon',
-        component: () => import('@/view/order/order-coupon/OrderCoupon.vue'),
+        path: 'category-manager',
+        name: 'category-manager',
+        component: () => import('@/view/product/category-manager/CategoryManager.vue'),
         meta: {
-          title: '优惠券',
+          title: '类目管理',
+          notCache: true,
+          icon: 'ios-settings'
+        }
+      },
+      {
+        path: 'product-manager',
+        name: 'product-manager',
+        component: () => import('@/view/product/product-manager/ProductManager.vue'),
+        meta: {
+          title: '商品管理',
+          notCache: true,
+          icon: 'ios-settings'
+        }
+      },
+      {
+        path: 'product-edit',
+        name: 'product-edit',
+        component: () => import('@/view/product/product-edit/ProductEdit.vue'),
+        meta: {
+          title: '商品编辑',
+          notCache: true,
+          icon: 'ios-settings'
+        }
+      },
+    ]
+  },
+  {
+    path: '/business',
+    name: 'business',
+    component: Main,
+    meta: {
+      title: '厂商管理',
+      notCache: true,
+      icon: 'ios-settings'
+    },
+    children: [
+      {
+        path: 'brand-manager',
+        name: 'brand-manager',
+        component: () => import('@/view/business/brand-manager/BrandManager.vue'),
+        meta: {
+          title: '品牌管理',
+          notCache: true,
+          icon: 'ios-settings'
+        }
+      },
+      {
+        path: 'brand-edit',
+        name: 'brand-edit',
+        component: () => import('@/view/business/brand-edit/BrandEdit.vue'),
+        meta: {
+          title: '品牌编辑',
+          notCache: true,
+          icon: 'ios-settings'
+        }
+      },
+      {
+        path: 'express-manager',
+        name: 'express-manager',
+        component: () => import('@/view/business/express-manager/ExpressManager.vue'),
+        meta: {
+          title: '物流管理',
           notCache: true,
           icon: 'ios-settings'
         }

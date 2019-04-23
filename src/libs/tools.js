@@ -1,3 +1,9 @@
+import {orderStatus} from "./constants";
+
+const data = {
+  orderStatus
+};
+
 export const forEach = (arr, fn) => {
   if (!arr.length || !fn) return
   let i = -1
@@ -213,3 +219,14 @@ export const objEqual = (obj1, obj2) => {
   /* eslint-disable-next-line */
   else return !keysArr1.some(key => obj1[key] != obj2[key])
 }
+
+// 通用状态获取
+export const statusRender = (value, key, h) => {
+  let text = '';
+  const list = data[key];
+  const index = list.findIndex(item => item.value == value);
+  if (index > -1) {
+    text = list[index].label;
+  }
+  return !!h ? h('span', text) : text;
+};

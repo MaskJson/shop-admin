@@ -22,7 +22,6 @@
 <script>
   import MyUpload from '@/view/components/global-util/MyUpload';
   import {imgBaseUrl} from "../../../config";
-  // import {aliCallbackImgUrl} from "../../../libs/aliUploadConfig";
 
   export default {
     name: "FormUtil",
@@ -235,7 +234,7 @@
         hide: true
       },
       props: {
-        value: _this.model[item.value].join(',')
+        value: _this.model[item.value]
       },
       on: renderEvent.call(this, item.value, 'Input')
     }, null));

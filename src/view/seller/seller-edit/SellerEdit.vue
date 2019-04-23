@@ -109,6 +109,7 @@
 
 <script>
   import CategoryList from './../../components/product/CategoryList';
+  import {category} from "../../../libs/data";
   export default {
     name: "SellerEdit",
     components: {
@@ -220,7 +221,7 @@
             }
           }
         },
-        itemCategory: [], // 商品菜单
+        itemCategory: category, // 商品菜单
         levelSecond: [], // 二级菜单
         levelThird: [], // 三级菜单
       }

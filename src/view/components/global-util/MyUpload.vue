@@ -2,7 +2,7 @@
   <div>
     <div class="demo-upload-list" v-for="(item, index) in fileList">
       <template>
-        <img :src="imgBaseUrl + item.src">
+        <img :src="item.src">
         <div class="demo-upload-list-cover">
           <Icon type="ios-eye-outline" @click.native="handleView(imgBaseUrl + item.src)"></Icon>
           <Icon type="ios-trash-outline" @click.native="handleRemove(index)"></Icon>
@@ -28,8 +28,10 @@
         <Icon type="ios-camera" size="20"></Icon>
       </div>
     </Upload>
-    <Modal title="View Image" v-model="visible">
-      <img :src="imgName" v-if="visible" style="width: 100%">
+    <Modal title="View Image" v-model="visible" :width="680">
+      <div class="center">
+        <img :src="imgName" v-if="visible" style="max-width: 650px">
+      </div>
     </Modal>
   </div>
 </template>

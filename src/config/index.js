@@ -31,3 +31,5 @@ export default {
 
   }
 }
+
+export const imgBaseUrl = '/api/';
