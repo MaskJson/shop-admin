@@ -1,74 +1,105 @@
 import axios from 'axios'
-import store from '@/store'
-// import { Spin } from 'iview'
-const addErrorLog = errorInfo => {
-  const { statusText, status, request: { responseURL } } = errorInfo
-  let info = {
-    type: 'ajax',
-    code: status,
-    mes: statusText,
-    url: responseURL
-  }
-  if (!responseURL.includes('save_error_logger')) store.dispatch('addErrorLog', info)
+import config from '@/config'
+import router from '../router/index'
+import {Message} from 'iview'
+import Cookies from 'js-cookie'
+
+function getStore(key) {
+  return localStorage.getItem(key);
 }
 
-class HttpRequest {
-  constructor (baseUrl = baseURL) {
-    this.baseUrl = baseUrl
-    this.queue = {}
-  }
-  getInsideConfig () {
-    const config = {
-      baseURL: this.baseUrl,
-      headers: {
-        //
-      }
-    }
-    return config
-  }
-  destroy (url) {
-    delete this.queue[url]
-    if (!Object.keys(this.queue).length) {
-      // Spin.hide()
-    }
-  }
-  interceptors (instance, url) {
-    // 请求拦截
-    instance.interceptors.request.use(config => {
-      // 添加全局的loading...
-      if (!Object.keys(this.queue).length) {
-        // Spin.show() // 不建议开启，因为界面不友好
-      }
-      this.queue[url] = true
-      return config
-    }, error => {
-      return Promise.reject(error)
-    })
-    // 响应拦截
-    instance.interceptors.response.use(res => {
-      this.destroy(url)
-      const { data, status } = res
-      return { data, status }
-    }, error => {
-      this.destroy(url)
-      let errorInfo = error.response
-      if (!errorInfo) {
-        const { request: { statusText, status }, config } = JSON.parse(JSON.stringify(error))
-        errorInfo = {
-          statusText,
-          status,
-          request: { responseURL: config.url }
-        }
-      }
-      addErrorLog(errorInfo)
-      return Promise.reject(error)
-    })
-  }
-  request (options) {
-    const instance = axios.create()
-    options = Object.assign(this.getInsideConfig(), options)
-    this.interceptors(instance, options.url)
-    return instance(options)
-  }
+function setStore(key, value) {
+  localStorage.setItem(key, value);
 }
-export default HttpRequest
+
+// 统一请求路径前缀
+let base = process.env.NODE_ENV === 'production' ? config.baseUrl.pro : config.baseUrl.dev;
+// 超时设定
+axios.defaults.timeout = 15000;
+
+axios.interceptors.request.use(config => {
+  let accessToken = getStore('accessToken');
+  Object.assign(config.headers, {
+    'token': accessToken
+  })
+  return config;
+}, err => {
+  Message.error('请求超时');
+  return Promise.reject(err);
+});
+
+// http response 拦截器
+axios.interceptors.response.use(response => {
+  const data = response.data;
+  // 根据返回的code值来做不同的处理(和后端约定)
+  if (data) {
+    switch (data.code) {
+      case 400:
+        Message.error(data.message || '请求处理异常');
+        return Promise.reject(data.data);
+        break;
+      case 401:
+      case 403:
+        Message.error(data.message || '未登录或登录超时');
+        // 未登录 清除已登录状态
+        Cookies.set('userInfo', '');
+        setStore('accessToken', '');
+        router.push('/login');
+        break;
+      default:
+        return Promise.resolve(data.data);
+    }
+  }
+  return Promise.reject(data.data);
+}, (err) => {
+  // 返回状态码不为200时候的错误处理
+  Message.error(err.toString());
+  return Promise.reject(err);
+});
+
+export const getRequest = (url, params) => {
+  return axios({
+    method: 'get',
+    url: `${base}${url}`,
+    params: params,
+  });
+};
+
+export const postRequest = (url, params) => {
+  return axios({
+    method: 'post',
+    url: `${base}${url}`,
+    data: params,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+    }
+  });
+};
+
+export const postJson = (url, params) => {
+  return axios({
+    method: 'post',
+    url: `${base}${url}`,
+    data: params,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  });
+};
+
+export const deleteRequest = (url, params) => {
+  return axios({
+    method: 'delete',
+    url: `${base}${url}`,
+    params: params,
+  });
+};
+
+export const uploadFileRequest = (url, params) => {
+  return axios({
+    method: 'post',
+    url: `${base}${url}`,
+    params: params,
+  });
+};
+

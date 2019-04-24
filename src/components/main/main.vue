@@ -80,7 +80,7 @@ export default {
       return this.$store.state.app.tagRouter
     },
     userAvator () {
-      return this.$store.state.user.avatorImgPath
+
     },
     cacheList () {
       const list = ['ParentView', ...this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []]
@@ -96,7 +96,7 @@ export default {
       return this.$store.state.app.hasReadErrorPage
     },
     unreadCount () {
-      return this.$store.state.user.unreadCount
+
     }
   },
   methods: {
@@ -180,8 +180,6 @@ export default {
         name: this.$config.homeName
       })
     }
-    // 获取未读消息条数
-    this.getUnreadMessageCount()
   }
 }
 </script>

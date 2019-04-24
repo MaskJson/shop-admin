@@ -11,7 +11,6 @@ import {
   localSave,
   localRead
 } from '@/libs/util'
-import { saveErrorLogger } from '@/api/data'
 import router from '@/router'
 import routers from '@/router/routers'
 import config from '@/config'
@@ -35,7 +34,7 @@ export default {
     hasReadErrorPage: false
   },
   getters: {
-    menuList: (state, getters, rootState) => getMenuByRouter(routers, rootState.user.access),
+    menuList: (state, getters, rootState) => getMenuByRouter(routers),
     errorCount: state => state.errorList.length
   },
   mutations: {
@@ -98,9 +97,6 @@ export default {
         userId,
         userName
       }
-      saveErrorLogger(info).then(() => {
-        commit('addError', data)
-      })
     }
   }
 }

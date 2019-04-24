@@ -35,9 +35,27 @@ module.exports = {
       .set('_c', resolve('src/components'))
   },
   // 打包时不生成.map文件
-  productionSourceMap: false
+  productionSourceMap: false,
   // 这里写你调用接口的基础路径，来解决跨域，如果设置了代理，那你本地开发环境的axios的baseUrl要写为 '' ，即空字符串
   // devServer: {
   //   proxy: 'localhost:3000'
   // }
+  // 这里写你调用接口的基础路径，来解决跨域，如果设置了代理，那你本地开发环境的axios的baseUrl要写为 '' ，即空字符串
+  devServer: {
+    host: '127.0.0.1',
+    port: 9866,
+    hot: true, // 启用热加载
+    compress: true,
+    overlay: {
+      warnings: false,
+      errors: false,
+    },
+    proxy: {
+      '/api': {
+        target: 'http://47.99.89.52:8080',  // 请求本地 需要后台接口
+        changeOrigin: true,
+        ws: true
+      }
+    }
+  },
 }
