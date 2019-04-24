@@ -120,7 +120,13 @@
       // 删除
       removeSelected() {
         if (this.selected.length) {
-          this.emitManagerHandler(2, {});
+          this.$Modal.confirm({
+            title: '删除确认',
+            content: '是否确定执行当前删除操作',
+            onOk: () => {
+              this.emitManagerHandler(2, {});
+            }
+          })
         } else {
           this.$Message.warning('请选择删除项');
         }

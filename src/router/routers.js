@@ -75,6 +75,48 @@ export default [
     component: () => import('@/view/error-page/404.vue')
   },
   {
+    path: '/sys',
+    name: 'sys',
+    meta: {
+      title: '系统管理',
+      noCache: true,
+      icon: 'ios-settings'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'sys-user',
+        name: 'sys-user',
+        meta: {
+          title: '系统用户管理',
+          noCache: true,
+          icon: 'ios-settings'
+        },
+        component: () => import('@/view/sys/sys-user/SysUser.vue')
+      },
+      {
+        path: 'sys-menu',
+        name: 'sys-menu',
+        meta: {
+          title: '系统菜单管理',
+          noCache: true,
+          icon: 'ios-settings'
+        },
+        component: () => import('@/view/sys/sys-menu/SysMenu.vue')
+      },
+      {
+        path: 'sys-role',
+        name: 'sys-role',
+        meta: {
+          title: '系统角色管理',
+          noCache: true,
+          icon: 'ios-settings'
+        },
+        component: () => import('@/view/sys/sys-role/SysRole.vue')
+      }
+    ]
+  },
+  {
     path: '/seller',
     name: 'seller',
     component: Main,
@@ -226,6 +268,28 @@ export default [
         component: () => import('@/view/business/express-manager/ExpressManager.vue'),
         meta: {
           title: '物流管理',
+          notCache: true,
+          icon: 'ios-settings'
+        }
+      },
+    ]
+  },
+  {
+    path: '/customer',
+    name: 'customer',
+    component: Main,
+    meta: {
+      title: '会员管理',
+      notCache: true,
+      icon: 'ios-settings'
+    },
+    children: [
+      {
+        path: 'customer-manager',
+        name: 'customer-manager',
+        component: () => import('@/view/customer/customer-manager/CustomerManager.vue'),
+        meta: {
+          title: '会员管理',
           notCache: true,
           icon: 'ios-settings'
         }

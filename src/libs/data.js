@@ -481,3 +481,76 @@ export const orderExpress = [
     expressPrice: 11
   }
 ];
+
+/////// sys
+export const menus = [
+  {
+    title: '系统管理',
+    expand: false,
+    children: [
+      {
+        title: '系统用户管理',
+      },
+      {
+        title: '系统菜单管理'
+      },
+      {
+        title: '系统角色管理'
+      }
+    ]
+  },
+  {
+    title: '商家管理',
+    expand: false,
+    children: [
+      {
+        title: '商家管理',
+      },
+      {
+        title: '商家编辑'
+      },
+    ]
+  },
+  {
+    title: '订单管理',
+    expand: false,
+    children: [
+      {
+        title: '订单管理',
+      },
+      {
+        title: '订单物流'
+      },
+    ]
+  },
+  {
+    title: '商品管理',
+    expand: false,
+    children: [
+      {
+        title: '类目管理',
+      },
+      {
+        title: '商品管理'
+      },
+      {
+        title: '商品编辑'
+      },
+    ]
+  },
+  {
+    title: '厂商管理',
+    expand: false,
+    children: [
+      {
+        title: '品牌管理',
+      },
+      {
+        title: '品牌编辑'
+      },
+      {
+        title: '物流管理'
+      },
+    ]
+  },
+];
