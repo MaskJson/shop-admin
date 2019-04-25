@@ -42,6 +42,8 @@
 </template>
 
 <script>
+  import {sellerList} from "../../../api/seller";
+
   export default {
     name: "SellerManager",
     data() {
@@ -184,7 +186,7 @@
     provide() {
       return {
         handlers: {
-
+          search: sellerList
         }
       }
     }

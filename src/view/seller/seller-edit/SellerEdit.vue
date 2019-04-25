@@ -78,25 +78,67 @@
       <div v-if="current == 1">
         <Form ref="detail" :label-width="120">
           <FormItem label="门店logo">
-            <MyUpload />
+            <MyUpload
+              action="/seller/img"
+              :index="0"
+              :uploaded="entity.log_pic"
+              :on-success="successHandler"
+              :on-remove="removeHandler"
+            />
           </FormItem>
           <FormItem label="营业执照">
-            <MyUpload />
+            <MyUpload
+              action="/seller/img"
+              :index="1"
+              :uploaded="entity.shop_cert_pic"
+              :on-success="successHandler"
+              :on-remove="removeHandler"
+            />
           </FormItem>
           <FormItem label="店主身份证正面照">
-            <MyUpload />
+            <MyUpload
+              action="/seller/img"
+              :index="2"
+              :uploaded="entity.facade_pic"
+              :on-success="successHandler"
+              :on-remove="removeHandler"
+            />
           </FormItem>
           <FormItem label="店主身份证反面照">
-            <MyUpload />
+            <MyUpload
+              action="/seller/img"
+              :index="3"
+              :uploaded="entity.back_pic"
+              :on-success="successHandler"
+              :on-remove="removeHandler"
+            />
           </FormItem>
           <FormItem label="店主照片">
-            <MyUpload />
+            <MyUpload
+              action="/seller/img"
+              :index="4"
+              :uploaded="entity.face_pic"
+              :on-success="successHandler"
+              :on-remove="removeHandler"
+            />
           </FormItem>
           <FormItem label="店面照片">
-            <MyUpload />
+            <MyUpload
+              action="/seller/img"
+              :index="4"
+              :uploaded="entity.door_pic"
+              :on-success="successHandler"
+              :on-remove="removeHandler"
+            />
           </FormItem>
           <FormItem label="店内照片">
-            <MyUpload />
+            <MyUpload
+              action="/seller/img"
+              :index="5"
+              :upload-list="uploadList"
+              :on-success="successHandler"
+              :on-remove="removeHandler"
+            />
           </FormItem>
           <FormItem label="店铺详情">
             <Editor
@@ -129,6 +171,7 @@
       return {
         show: false,
         current: 0,
+        uploadList: [],
         area: [
           {
             value: 'beijing',
@@ -245,16 +288,16 @@
           contacts: null, // 联系人
           tel: '', // 联系电话
           log_pic: '', // 店铺logo
-          shop_cert_pic: 'http://img3.imgtn.bdimg.com/it/u=1020812404,2607455231&fm=26&gp=0.jpg', // 营业执照
-          facade_pic: 'http://img3.imgtn.bdimg.com/it/u=1020812404,2607455231&fm=26&gp=0.jpg', // 身份证正面照
-          back_pic: 'http://img3.imgtn.bdimg.com/it/u=1020812404,2607455231&fm=26&gp=0.jpg', // 反面照
-          face_pic: 'http://img3.imgtn.bdimg.com/it/u=1020812404,2607455231&fm=26&gp=0.jpg', // 店主照片
-          door_pic: 'http://img3.imgtn.bdimg.com/it/u=1020812404,2607455231&fm=26&gp=0.jpg', // 店面照片
-          instore_pic1: 'http://img3.imgtn.bdimg.com/it/u=1020812404,2607455231&fm=26&gp=0.jpg', // 店内照片
-          instore_pic2: 'http://img3.imgtn.bdimg.com/it/u=1020812404,2607455231&fm=26&gp=0.jpg', // 店内照片
-          instore_pic3: 'http://img3.imgtn.bdimg.com/it/u=1020812404,2607455231&fm=26&gp=0.jpg', // 店内照片
-          instore_pic4: 'http://img3.imgtn.bdimg.com/it/u=1020812404,2607455231&fm=26&gp=0.jpg', // 店内照片
-          instore_pic5: 'http://img3.imgtn.bdimg.com/it/u=1020812404,2607455231&fm=26&gp=0.jpg', // 店内照片
+          shop_cert_pic: '', // 营业执照
+          facade_pic: '', // 身份证正面照
+          back_pic: '', // 反面照
+          face_pic: '', // 店主照片
+          door_pic: '', // 店面照片
+          instore_pic1: '', // 店内照片
+          instore_pic2: '', // 店内照片
+          instore_pic3: '', // 店内照片
+          instore_pic4: '', // 店内照片
+          instore_pic5: '', // 店内照片
           classify1: null, // 一级分类
           classify2: null, // 二级分类
           classify3: null, // 三级分类
@@ -303,6 +346,14 @@
           this.$refs['level3'].reset();
           this.levelThird = children;
         }
+      },
+      successHandler(res, file, index) {
+        switch (index) {
+
+        }
+      },
+      removeHandler(res, file, index) {
+
       },
       checkInfo() {
         this.$refs['info'].validate(valid => {

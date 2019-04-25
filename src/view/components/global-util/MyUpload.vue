@@ -22,7 +22,7 @@
       :before-upload="handleBeforeUpload"
       :multiple="multiple"
       type="drag"
-      action="/api/uploadimg"
+      :action="'/api/system/file/uploadFile' + action"
       style="display: inline-block;width:58px;">
       <div style="width: 58px;height:58px;line-height: 58px;">
         <Icon type="ios-camera" size="20"></Icon>
@@ -50,6 +50,14 @@
       }
     },
     props: {
+      action: {
+        type: String,
+        default: ''
+      },
+      index: {
+        type: Number,
+        default: null
+      },
       uploadList: {
         type: Array,
         default() {
@@ -148,13 +156,11 @@
       },
       handleRemove (index) {
         this.onRemove(index);
-        this.$emit('on-remove')
+        this.$emit('on-remove', this.index, index);
       },
       handleSuccess (res, file) {
-        // file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar';
-        // file.name = '7eb99afb9d5f317c912f08b5212fd69a';
         this.onSuccess(res, file);
-        this.$emit('on-success', res, file);
+        this.$emit('on-success', res, file, this.index);
       },
       handleFormatError (file) {
         const _this = this;
