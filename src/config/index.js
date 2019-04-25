@@ -32,4 +32,4 @@ export default {
   }
 }
 
-export const imgBaseUrl = '/api/';
+export const imgBaseUrl = 'http://47.99.89.52:90/'

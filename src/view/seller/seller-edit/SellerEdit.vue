@@ -82,8 +82,8 @@
               action="/seller/img"
               :index="0"
               :uploaded="entity.log_pic"
-              :on-success="successHandler"
-              :on-remove="removeHandler"
+              @on-success="successHandler"
+              @on-remove="removeHandler"
             />
           </FormItem>
           <FormItem label="营业执照">
@@ -91,8 +91,8 @@
               action="/seller/img"
               :index="1"
               :uploaded="entity.shop_cert_pic"
-              :on-success="successHandler"
-              :on-remove="removeHandler"
+              @on-success="successHandler"
+              @on-remove="removeHandler"
             />
           </FormItem>
           <FormItem label="店主身份证正面照">
@@ -100,8 +100,8 @@
               action="/seller/img"
               :index="2"
               :uploaded="entity.facade_pic"
-              :on-success="successHandler"
-              :on-remove="removeHandler"
+              @on-success="successHandler"
+              @on-remove="removeHandler"
             />
           </FormItem>
           <FormItem label="店主身份证反面照">
@@ -109,8 +109,8 @@
               action="/seller/img"
               :index="3"
               :uploaded="entity.back_pic"
-              :on-success="successHandler"
-              :on-remove="removeHandler"
+              @on-success="successHandler"
+              @on-remove="removeHandler"
             />
           </FormItem>
           <FormItem label="店主照片">
@@ -118,26 +118,28 @@
               action="/seller/img"
               :index="4"
               :uploaded="entity.face_pic"
-              :on-success="successHandler"
-              :on-remove="removeHandler"
+              @on-success="successHandler"
+              @on-remove="removeHandler"
             />
           </FormItem>
           <FormItem label="店面照片">
             <MyUpload
               action="/seller/img"
-              :index="4"
+              :index="5"
               :uploaded="entity.door_pic"
-              :on-success="successHandler"
-              :on-remove="removeHandler"
+              @on-success="successHandler"
+              @on-remove="removeHandler"
             />
           </FormItem>
           <FormItem label="店内照片">
             <MyUpload
+              v-if="uploadList>=5"
               action="/seller/img"
-              :index="5"
+              :index="6"
+              :multiple="true"
               :upload-list="uploadList"
-              :on-success="successHandler"
-              :on-remove="removeHandler"
+              @on-success="successHandler"
+              @on-remove="removeHandler"
             />
           </FormItem>
           <FormItem label="店铺详情">
@@ -158,225 +160,251 @@
 </template>
 
 <script>
-  import CategoryList from './../../components/product/CategoryList';
-  import {category} from "../../../libs/data";
-  import {sellerSave} from "../../../api/seller";
+import CategoryList from './../../components/product/CategoryList'
+import { category } from '../../../libs/data'
+import { sellerSave } from '../../../api/seller'
 
-  export default {
-    name: "SellerEdit",
-    components: {
-      CategoryList
-    },
-    data() {
-      return {
-        show: false,
-        current: 0,
-        uploadList: [],
-        area: [
-          {
-            value: 'beijing',
-            label: '浙江',
-            children: [
-              {
-                value: 'gugong',
-                label: '杭州市',
-                children: [
-                  {
-                    value: 'hz',
-                    label: '拱墅区'
-                  },
-                  {
-                    value: 'hz',
-                    label: '上城区'
-                  },
-                  {
-                    value: 'hz',
-                    label: '下城区'
-                  },
-                  {
-                    value: 'hz',
-                    label: '滨江区'
-                  },
-                  {
-                    value: 'hz',
-                    label: '富阳区'
-                  },
-                ]
-              },
-              {
-                value: 'nb',
-                label: '宁波市',
-                children: [
-                  {
-                    value: 'yy',
-                    label: '余姚市'
-                  },
-                  {
-                    value: 'yy',
-                    label: '慈溪市'
-                  },
-                ]
-              }
-            ]
-          }, {
-            value: 'jiangsu',
-            label: '江苏',
-            children: [
-              {
-                value: 'nanjing',
-                label: '南京',
-                children: [
-                  {
-                    value: 'fuzimiao',
-                    label: '溧水',
-                  },
-                  {
-                    value: 'fuzimiao',
-                    label: '江宁',
-                  },
-                ]
-              },
-              {
-                value: 'suzhou',
-                label: '苏州市',
-                children: [
-                  {
-                    value: 'zhuozhengyuan',
-                    label: '常熟市',
-                  },
-                  {
-                    value: 'shizilin',
-                    label: '昆山市',
-                  }
-                ]
-              }
+export default {
+  name: 'SellerEdit',
+  components: {
+    CategoryList
+  },
+  data () {
+    return {
+      show: false,
+      current: 0,
+      uploadList: [],
+      area: [
+        {
+          value: 'beijing',
+          label: '浙江',
+          children: [
+            {
+              value: 'gugong',
+              label: '杭州市',
+              children: [
+                {
+                  value: 'hz',
+                  label: '拱墅区'
+                },
+                {
+                  value: 'hz',
+                  label: '上城区'
+                },
+                {
+                  value: 'hz',
+                  label: '下城区'
+                },
+                {
+                  value: 'hz',
+                  label: '滨江区'
+                },
+                {
+                  value: 'hz',
+                  label: '富阳区'
+                }
+              ]
+            },
+            {
+              value: 'nb',
+              label: '宁波市',
+              children: [
+                {
+                  value: 'yy',
+                  label: '余姚市'
+                },
+                {
+                  value: 'yy',
+                  label: '慈溪市'
+                }
+              ]
+            }
+          ]
+        }, {
+          value: 'jiangsu',
+          label: '江苏',
+          children: [
+            {
+              value: 'nanjing',
+              label: '南京',
+              children: [
+                {
+                  value: 'fuzimiao',
+                  label: '溧水'
+                },
+                {
+                  value: 'fuzimiao',
+                  label: '江宁'
+                }
+              ]
+            },
+            {
+              value: 'suzhou',
+              label: '苏州市',
+              children: [
+                {
+                  value: 'zhuozhengyuan',
+                  label: '常熟市'
+                },
+                {
+                  value: 'shizilin',
+                  label: '昆山市'
+                }
+              ]
+            }
+          ]
+        }],
+      editorOption: {
+        placeholder: '请输入商品相关介绍',
+        modules: {
+          toolbar: {
+            container: [
+              ['bold', 'italic', 'underline', 'strike'],
+              [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+              [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+              [{ 'color': [] }, { 'background': [] }],
+              [{ 'align': [] }],
+              ['image']
             ],
-          }],
-        editorOption: {
-          placeholder: "请输入商品相关介绍",
-          modules: {
-            toolbar: {
-              container: [
-                ['bold', 'italic', 'underline', 'strike'],
-                [{'list': 'ordered'}, {'list': 'bullet'}],
-                [{'header': [1, 2, 3, 4, 5, 6, false]}],
-                [{'color': []}, {'background': []}],
-                [{'align': []}],
-                ['image']
-              ],
-              handlers: {
-                image: image => {
-                  if (image) {
-                    let fileInput = document.getElementById('presentGet');
-                    fileInput.click();
-                  }
+            handlers: {
+              image: image => {
+                if (image) {
+                  let fileInput = document.getElementById('presentGet')
+                  fileInput.click()
                 }
               }
             }
           }
-        },
-        itemCategory: category, // 商品菜单
-        levelSecond: [], // 二级菜单
-        levelThird: [], // 三级菜单
-        entity: {
-          seller_name: '', // 门店名称
-          seller_type: null, // 门店类型
-          province_id: null, // 省id
-          city_id: null, // 城市 id
-          area_id: null, // 区id
-          address: null, // 详细地址
-          contacts: null, // 联系人
-          tel: '', // 联系电话
-          log_pic: '', // 店铺logo
-          shop_cert_pic: '', // 营业执照
-          facade_pic: '', // 身份证正面照
-          back_pic: '', // 反面照
-          face_pic: '', // 店主照片
-          door_pic: '', // 店面照片
-          instore_pic1: '', // 店内照片
-          instore_pic2: '', // 店内照片
-          instore_pic3: '', // 店内照片
-          instore_pic4: '', // 店内照片
-          instore_pic5: '', // 店内照片
-          classify1: null, // 一级分类
-          classify2: null, // 二级分类
-          classify3: null, // 三级分类
-          type: null, // 品牌类型
-          deliver_pip: null, // 配送标准
-          deliver_cost: null, // 默认配送费
-          business_date_time: '',
-          create_user_id: 1
-        },
-        infoRule: {
-          seller_name: [
-            { required: true, type: 'string', message: '请填写门店名称', trigger: 'blur' }
-          ],
-          seller_type: [
-            { required: true, type: 'number', message: '请选择门店类型', trigger: 'change' }
-          ],
-          type: [
-            { required: true, type: 'number', message: '请选择品牌类型', trigger: 'change' }
-          ],
-          address: [
-            { required: true, type: 'string', message: '请填写门店详细地址', trigger: 'blur' }
-          ],
-          contacts: [
-            { required: true, type: 'string', message: '请填写联系人', trigger: 'blur' }
-          ],
-          tel: [
-            { required: true, regexp: /^[1][3,4,5,7,8][0-9]{9}$/, message: '请填写正确的手机号', trigger: 'blur' }
-          ],
-          deliver_pip: [
-            { required: true, type: 'number', message: '请选择配送标准', trigger: 'change' }
-          ],
-          deliver_cost: [
-            { required: true, type: 'number', message: '请选择配送费', trigger: 'change' }
-          ],
         }
+      },
+      itemCategory: category, // 商品菜单
+      levelSecond: [], // 二级菜单
+      levelThird: [], // 三级菜单
+      entity: {
+        seller_name: '', // 门店名称
+        seller_type: null, // 门店类型
+        province_id: null, // 省id
+        city_id: null, // 城市 id
+        area_id: null, // 区id
+        address: null, // 详细地址
+        contacts: null, // 联系人
+        tel: '', // 联系电话
+        log_pic: '', // 店铺logo
+        shop_cert_pic: '', // 营业执照
+        facade_pic: '', // 身份证正面照
+        back_pic: '', // 反面照
+        face_pic: '', // 店主照片
+        door_pic: '', // 店面照片
+        instore_pic1: '', // 店内照片
+        instore_pic2: '', // 店内照片
+        instore_pic3: '', // 店内照片
+        instore_pic4: '', // 店内照片
+        instore_pic5: '', // 店内照片
+        classify1: null, // 一级分类
+        classify2: null, // 二级分类
+        classify3: null, // 三级分类
+        type: null, // 品牌类型
+        deliver_pip: null, // 配送标准
+        deliver_cost: null, // 默认配送费
+        business_date_time: '',
+        create_user_id: 1
+      },
+      infoRule: {
+        seller_name: [
+          { required: true, type: 'string', message: '请填写门店名称', trigger: 'blur' }
+        ],
+        seller_type: [
+          { required: true, type: 'number', message: '请选择门店类型', trigger: 'change' }
+        ],
+        type: [
+          { required: true, type: 'number', message: '请选择品牌类型', trigger: 'change' }
+        ],
+        address: [
+          { required: true, type: 'string', message: '请填写门店详细地址', trigger: 'blur' }
+        ],
+        contacts: [
+          { required: true, type: 'string', message: '请填写联系人', trigger: 'blur' }
+        ],
+        tel: [
+          { required: true, regexp: /^[1][3,4,5,7,8][0-9]{9}$/, message: '请填写正确的手机号', trigger: 'blur' }
+        ],
+        deliver_pip: [
+          { required: true, type: 'number', message: '请选择配送标准', trigger: 'change' }
+        ],
+        deliver_cost: [
+          { required: true, type: 'number', message: '请选择配送费', trigger: 'change' }
+        ]
+      }
+    }
+  },
+  methods: {
+    onSelected (level, children) {
+      if (level == 1) {
+        this.$refs['level2'].reset()
+        this.$refs['level3'].reset()
+        this.levelSecond = children
+        this.levelThird = null
+      } else if (level == 2) {
+        this.$refs['level3'].reset()
+        this.levelThird = children
       }
     },
-    methods: {
-      onSelected(level, children) {
-        if (level == 1) {
-          this.$refs['level2'].reset();
-          this.$refs['level3'].reset();
-          this.levelSecond = children;
-          this.levelThird = null;
-        } else if (level == 2) {
-          this.$refs['level3'].reset();
-          this.levelThird = children;
-        }
-      },
-      successHandler(res, file, index) {
-        switch (index) {
-
-        }
-      },
-      removeHandler(res, file, index) {
-
-      },
-      checkInfo() {
-        this.$refs['info'].validate(valid => {
-          if (valid) {
-            this.current = 1;
-          } else {
-            this.$Message.error('请填写必选项');
-          }
-        })
-      },
-      save() {
-        this.show = true;
-        sellerSave(this.entity).then(data => {
-          this.show = false;
-        }).catch(data => {this.show = false;});
+    successHandler (res, file, index) {
+      let key = ''
+      switch (index) {
+        case 0: key = 'log_pic'; break
+        case 1: key = 'shop_cert_pic'; break
+        case 2: key = 'facade_pic'; break
+        case 3: key = 'back_pic'; break
+        case 4: key = 'face_pic'; break
+        case 5: key = 'door_pic'; break
+        case 6: key = this.uploadList.push(res.data); break
+      }
+      if (index != 6) {
+        this.entity[key] = res.data
       }
     },
-    watch: {
-      current() {
-        document.getElementById('content').scrollTop = 0;
-      },
+    removeHandler (flag, index) {
+      let key = ''
+      switch (flag) {
+        case 0: key = 'log_pic'; break
+        case 1: key = 'shop_cert_pic'; break
+        case 2: key = 'facade_pic'; break
+        case 3: key = 'back_pic'; break
+        case 4: key = 'face_pic'; break
+        case 5: key = 'door_pic'; break
+        case 6: key = this.uploadList.splice(index, 1); break
+      }
+      if (index != 6) {
+        this.entity[key] = ''
+      }
+    },
+    checkInfo () {
+      this.$refs['info'].validate(valid => {
+        if (valid) {
+          this.current = 1
+        } else {
+          this.$Message.error('请填写必选项')
+        }
+      })
+    },
+    save () {
+      this.uploadList.forEach((item, index) => {
+        this.entity['instore_pic' + (index + 1)] = item
+      })
+      this.show = true
+      sellerSave(this.entity).then(data => {
+        this.show = false
+        this.$router.push('/seller/seller-manager')
+      }).catch(data => { this.show = false })
+    }
+  },
+  watch: {
+    current () {
+      document.getElementById('content').scrollTop = 0
     }
   }
+}
 </script>
 
 <style scoped>

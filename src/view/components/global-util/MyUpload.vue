@@ -2,9 +2,9 @@
   <div>
     <div class="demo-upload-list" v-for="(item, index) in fileList">
       <template>
-        <img :src="item.src">
+        <img :src="imgBaseUrl + item">
         <div class="demo-upload-list-cover">
-          <Icon type="ios-eye-outline" @click.native="handleView(imgBaseUrl + item.src)"></Icon>
+          <Icon type="ios-eye-outline" @click.native="handleView(imgBaseUrl + item)"></Icon>
           <Icon type="ios-trash-outline" @click.native="handleRemove(index)"></Icon>
         </div>
       </template>
@@ -13,7 +13,7 @@
       v-show="multiple || !uploaded"
       ref="upload"
       :show-upload-list="false"
-      :default-file-list="showList"
+      :default-file-list="uploadList"
       :on-success="handleSuccess"
       :format="format"
       :max-size="maxSize"
@@ -38,154 +38,132 @@
 
 <script>
 
-  import {imgBaseUrl} from "../../../config";
+import { imgBaseUrl } from '../../../config'
 
-  export default {
-    name: "MyUpload",
-    data () {
-      return {
-        imgName: '',
-        visible: false,
-        imgBaseUrl: imgBaseUrl
-      }
-    },
-    props: {
-      action: {
-        type: String,
-        default: ''
-      },
-      index: {
-        type: Number,
-        default: null
-      },
-      uploadList: {
-        type: Array,
-        default() {
-          return [];
-        }
-      },
-      format: {
-        type: Array,
-        default() {
-          return [];
-        }
-      },
-      multiple: {
-        type: Boolean,
-        default: false
-      },
-      maxSize: {
-        type: Number,
-        default: 1024
-      },
-      onRemove: {
-        type: Function,
-        default() {
-          return () => {
-
-          }
-        }
-      },
-      onSuccess: {
-        type: Function,
-        default() {
-          return () => {
-
-          }
-        }
-      },
-      onFormatError: {
-        type: Function,
-        default() {
-          return () => {
-
-          }
-        }
-      },
-      onExceededSize: {
-        type: Function,
-        default() {
-          return () => {
-
-          }
-        }
-      },
-      uploaded: {
-        type: String,
-        default: null
-      }
-    },
-    computed: {
-      showList() {
-        return this.uploadList.map(item => {
-          return {
-            src: item,
-            status: true
-          }
-        })
-      },
-      fileList: {
-        get() {
-          let result = [];
-          if (this.uploadList.length > 0) {
-            let list = this.uploadList;
-            result = list.map(item => {
-              item.status = true;
-              item.percentage = 100;
-              return item;
-            });
-          }
-          if (this.uploaded) {
-            result.push({
-              status: true,
-              percentage: 100,
-              src: this.uploaded
-            })
-          }
-          return result;
-        },
-        set(newVal) {
-
-        }
-      }
-    },
-    methods: {
-      handleView (item) {
-        this.imgName = item.src;
-        this.visible = true;
-      },
-      handleRemove (index) {
-        this.onRemove(index);
-        this.$emit('on-remove', this.index, index);
-      },
-      handleSuccess (res, file) {
-        this.onSuccess(res, file);
-        this.$emit('on-success', res, file, this.index);
-      },
-      handleFormatError (file) {
-        const _this = this;
-        this.$Notice.warning({
-          title: 'The file format is incorrect',
-          desc: 'File format of ' + file.name + ' is incorrect, please select in '+this.format.toString()
-        });
-        // this.onFormatError();
-      },
-      handleMaxSize (file) {
-        const _this = this;
-        this.$Notice.warning({
-          title: 'Exceeding file size limit',
-          desc: 'File  ' + file.name + ' is too large, no more than '+ _this.maxSize +'KB.'
-        });
-        // this.onExceededSize();
-      },
-      handleBeforeUpload() {
-        return true;
-      }
-    },
-    mounted () {
-
+export default {
+  name: 'MyUpload',
+  data () {
+    return {
+      imgName: '',
+      visible: false,
+      imgBaseUrl: imgBaseUrl
     }
+  },
+  props: {
+    action: {
+      type: String,
+      default: ''
+    },
+    index: {
+      type: Number,
+      default: null
+    },
+    uploadList: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    format: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    multiple: {
+      type: Boolean,
+      default: false
+    },
+    maxSize: {
+      type: Number,
+      default: 1024
+    },
+    onRemove: {
+      type: Function,
+      default () {
+        return () => {
+
+        }
+      }
+    },
+    onSuccess: {
+      type: Function,
+      default () {
+        return () => {
+
+        }
+      }
+    },
+    onFormatError: {
+      type: Function,
+      default () {
+        return () => {
+
+        }
+      }
+    },
+    onExceededSize: {
+      type: Function,
+      default () {
+        return () => {
+
+        }
+      }
+    },
+    uploaded: {
+      type: String,
+      default: null
+    }
+  },
+  computed: {
+    fileList: {
+      get () {
+        let result = [].concat(this.uploadList)
+        if (this.uploaded) {
+          result.push(this.uploaded)
+        }
+        return result
+      },
+      set (newVal) {
+
+      }
+    }
+  },
+  methods: {
+    handleView (item) {
+      this.imgName = item.src
+      this.visible = true
+    },
+    handleRemove (index) {
+      this.$emit('on-remove', this.index, index)
+    },
+    handleSuccess (res, file) {
+      this.$emit('on-success', res, file, this.index)
+    },
+    handleFormatError (file) {
+      const _this = this
+      this.$Notice.warning({
+        title: 'The file format is incorrect',
+        desc: 'File format of ' + file.name + ' is incorrect, please select in ' + this.format.toString()
+      })
+      // this.onFormatError();
+    },
+    handleMaxSize (file) {
+      const _this = this
+      this.$Notice.warning({
+        title: 'Exceeding file size limit',
+        desc: 'File  ' + file.name + ' is too large, no more than ' + _this.maxSize + 'KB.'
+      })
+      // this.onExceededSize();
+    },
+    handleBeforeUpload () {
+      return true
+    }
+  },
+  mounted () {
+
   }
+}
 </script>
 
 <style scoped>
