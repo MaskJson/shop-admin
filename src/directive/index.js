@@ -6,6 +6,7 @@ import SearchItem from '@/view/components/global-util/SearchItem';
 import DateUtil from '@/view/components/global-util/DateUtil';
 import MyUpload from '@/view/components/global-util/MyUpload';
 import SpinUtil from '@/view/components/global-util/SpinUtil';
+import ImageView from '@/view/components/global-util/ImageView';
 import { quillEditor } from 'vue-quill-editor';
 const importDirective = Vue => {
   /**
@@ -33,6 +34,7 @@ const importDirective = Vue => {
   Vue.component('DateUtil', DateUtil);
   Vue.component('MyUpload', MyUpload);
   Vue.component('SpinUtil', SpinUtil);
+  Vue.component('ImageView', ImageView);
   Vue.component('Editor', quillEditor);
 };
 

@@ -159,8 +159,8 @@ export default {
             this.showSpin = false
             if (type == 3) {
               if (!this.unPage) {
-                this.list = data.content || []
-                this.page.total = data.totalElements
+                this.list = data.records || []
+                this.page.total = data.total
               } else {
                 this.list = data
               }

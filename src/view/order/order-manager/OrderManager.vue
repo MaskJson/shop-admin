@@ -48,8 +48,8 @@
 
 <script>
   import { orderStatus } from "../../../libs/constants";
-  import { statusRender } from "../../../libs/tools";
-  import { orders } from "../../../libs/data";
+  import {orderList} from "../../../api/order";
+  // import { orders } from "../../../libs/data";
 
   export default {
     name: "OrderManager",
@@ -68,7 +68,7 @@
             title: '订单状态',
             align: 'center',
             render: (h, params) => {
-              return statusRender(params.row.status, 'orderStatus', h);
+              return this.$statusRender(params.row.status, 'orderStatus', h);
             }
           },
           {
@@ -154,13 +154,13 @@
       }
     },
     mounted() {
-      this.$refs.manager.list = orders;
-      this.$refs.manager.page.total = orders.length;
+      // this.$refs.manager.list = orders;
+      // this.$refs.manager.page.total = orders.length;
     },
     provide() {
       return {
         handlers: {
-
+          search: orderList
         }
       }
     }

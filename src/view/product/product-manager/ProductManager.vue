@@ -22,11 +22,7 @@
       <Button type="primary" class="ml-10">批量上架</Button>
       <Button type="warning" class="ml-10">批量下架</Button>
     </ManagerView>
-    <Modal title="View Image" v-model="visible" :width="680">
-      <div class="center">
-        <img :src="imgName" v-if="visible" style="max-width: 650px">
-      </div>
-    </Modal>
+    <ImageView ref="img" :imgName="imgName"/>
   </Card>
 </template>
 
@@ -37,7 +33,6 @@
     name: "ProductManager",
     data() {
       return {
-        visible: false,
         imgName: null,
         columns: [
           {
@@ -50,23 +45,7 @@
             align: 'center',
             key: 'logo',
             render: (h, params) => {
-              return h('img', {
-                domProps: {
-                  src: params.row.logo,
-                  title: '点击查看大图'
-                },
-                class: {
-                  w100: true,
-                  'mt-5': true,
-                  cursor: true
-                },
-                on: {
-                  click: () => {
-                    this.imgName = params.row.logo;
-                    this.visible = true;
-                  }
-                }
-              })
+              return this.$imgRender(h, params.row.logo);
             }
           },
           {

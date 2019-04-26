@@ -89,53 +89,36 @@
           <FormItem label="营业执照">
             <MyUpload
               action="/seller/img"
-              :index="1"
-              :uploaded="entity.shop_cert_pic"
-              @on-success="successHandler"
-              @on-remove="removeHandler"
+              v-model="entity.shop_cert_pic"
             />
           </FormItem>
           <FormItem label="店主身份证正面照">
             <MyUpload
               action="/seller/img"
-              :index="2"
-              :uploaded="entity.facade_pic"
-              @on-success="successHandler"
-              @on-remove="removeHandler"
+              v-model="entity.facade_pic"
             />
           </FormItem>
           <FormItem label="店主身份证反面照">
             <MyUpload
               action="/seller/img"
-              :index="3"
-              :uploaded="entity.back_pic"
-              @on-success="successHandler"
-              @on-remove="removeHandler"
+              v-model="entity.back_pic"
             />
           </FormItem>
           <FormItem label="店主照片">
             <MyUpload
               action="/seller/img"
-              :index="4"
-              :uploaded="entity.face_pic"
-              @on-success="successHandler"
-              @on-remove="removeHandler"
+              v-model="entity.face_pic"
             />
           </FormItem>
           <FormItem label="店面照片">
             <MyUpload
               action="/seller/img"
-              :index="5"
-              :uploaded="entity.door_pic"
-              @on-success="successHandler"
-              @on-remove="removeHandler"
+              v-model="entity.door_pic"
             />
           </FormItem>
           <FormItem label="店内照片">
             <MyUpload
-              v-if="uploadList>=5"
               action="/seller/img"
-              :index="6"
               :multiple="true"
               :upload-list="uploadList"
               @on-success="successHandler"
@@ -350,34 +333,10 @@ export default {
       }
     },
     successHandler (res, file, index) {
-      let key = ''
-      switch (index) {
-        case 0: key = 'log_pic'; break
-        case 1: key = 'shop_cert_pic'; break
-        case 2: key = 'facade_pic'; break
-        case 3: key = 'back_pic'; break
-        case 4: key = 'face_pic'; break
-        case 5: key = 'door_pic'; break
-        case 6: key = this.uploadList.push(res.data); break
-      }
-      if (index != 6) {
-        this.entity[key] = res.data
-      }
+      this.uploadList.push(res.data)
     },
     removeHandler (flag, index) {
-      let key = ''
-      switch (flag) {
-        case 0: key = 'log_pic'; break
-        case 1: key = 'shop_cert_pic'; break
-        case 2: key = 'facade_pic'; break
-        case 3: key = 'back_pic'; break
-        case 4: key = 'face_pic'; break
-        case 5: key = 'door_pic'; break
-        case 6: key = this.uploadList.splice(index, 1); break
-      }
-      if (index != 6) {
-        this.entity[key] = ''
-      }
+      this.uploadList.splice(index, 1);
     },
     checkInfo () {
       this.$refs['info'].validate(valid => {

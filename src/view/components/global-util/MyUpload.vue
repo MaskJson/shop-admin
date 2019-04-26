@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="demo-upload-list" v-for="(item, index) in fileList">
+    <div class="demo-upload-list" v-if="showList" v-for="(item, index) in fileList">
       <template>
         <img :src="imgBaseUrl + item">
         <div class="demo-upload-list-cover">
@@ -10,10 +10,9 @@
       </template>
     </div>
     <Upload
-      v-show="multiple || !uploaded"
+      v-show="multiple || !value"
       ref="upload"
       :show-upload-list="false"
-      :default-file-list="uploadList"
       :on-success="handleSuccess"
       :format="format"
       :max-size="maxSize"
@@ -50,9 +49,17 @@ export default {
     }
   },
   props: {
+    value: {
+      type: String,
+      default: null
+    },
     action: {
       type: String,
       default: ''
+    },
+    showList: {
+      type: Boolean,
+      default: true
     },
     index: {
       type: Number,
@@ -73,6 +80,10 @@ export default {
     multiple: {
       type: Boolean,
       default: false
+    },
+    maxLength: {
+      type: Number,
+      default: null
     },
     maxSize: {
       type: Number,
@@ -110,19 +121,11 @@ export default {
         }
       }
     },
-    uploaded: {
-      type: String,
-      default: null
-    }
   },
   computed: {
     fileList: {
       get () {
-        let result = [].concat(this.uploadList)
-        if (this.uploaded) {
-          result.push(this.uploaded)
-        }
-        return result
+        return this.uploadList;
       },
       set (newVal) {
 
@@ -135,10 +138,25 @@ export default {
       this.visible = true
     },
     handleRemove (index) {
-      this.$emit('on-remove', this.index, index)
+      if (!this.mutiple) {
+        this.$emit('input', null);
+        this.uploadList.splice(index, 1);
+      } else {
+        if (this.showList) {
+          this.uploadList.splice(index, 1);
+        } else {
+          this.$emit('on-remove', this.index, index)
+        }
+      }
     },
     handleSuccess (res, file) {
-      this.$emit('on-success', res, file, this.index)
+      if (this.multiple) {
+        this.$emit('on-success', res, file, this.index)
+      } else {
+        this.$emit('input', res.data);
+        this.uploadList.push(res.data);
+      }
+
     },
     handleFormatError (file) {
       const _this = this
@@ -162,6 +180,13 @@ export default {
   },
   mounted () {
 
+  },
+  watch: {
+    value(v) {
+      if (!v) {
+        this.uploadList.splice(0, 1);
+      }
+    }
   }
 }
 </script>
