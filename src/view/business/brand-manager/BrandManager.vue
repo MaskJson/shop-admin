@@ -21,7 +21,8 @@
 </template>
 
 <script>
-  import {brands} from "../../../libs/data";
+  // import {brands} from "../../../libs/data";
+  import {brandList} from "../../../api/business";
 
   export default {
     name: "BrandManager",
@@ -71,6 +72,11 @@
                 props: {
                   type: 'primary',
                   size: 'small'
+                },
+                on: {
+                  click: () => {
+                    this.$router.push('/business/brand-edit?id=' + params.row.id);
+                  }
                 }
               }, '编辑')
             }
@@ -81,13 +87,13 @@
     provide() {
       return {
         handlers: {
-
+          search: brandList
         }
       }
     },
     mounted() {
-      this.$refs.manager.list = brands;
-      this.$refs.manager.page.total = brands.length;
+      // this.$refs.manager.list = brands;
+      // this.$refs.manager.page.total = brands.length;
     }
   }
 </script>

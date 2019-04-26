@@ -26,7 +26,7 @@
             action="/business/img"
             v-model="entity.log_pic"
           />
-          <!--<Input class="hide" v-model="entity.logo_pic"/>-->
+          <Input class="hide" v-model="entity.logo_pic"/>
         </FormItem>
       </Form>
     </ModalUtil>

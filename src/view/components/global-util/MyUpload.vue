@@ -125,6 +125,9 @@ export default {
   computed: {
     fileList: {
       get () {
+        if (this.value) {
+          this.uploadList.push(this.value);
+        }
         return this.uploadList;
       },
       set (newVal) {
@@ -154,7 +157,6 @@ export default {
         this.$emit('on-success', res, file, this.index)
       } else {
         this.$emit('input', res.data);
-        this.uploadList.push(res.data);
       }
 
     },

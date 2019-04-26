@@ -15,3 +15,20 @@ export const expressList = (params) => {
 export const expressUpdate = (params) => {
   return postJson('/business/express/update', params);
 };
+
+// 品牌
+export const brandSave = (params) => {
+  return postJson('/business/brand/insert', params);
+};
+
+export const brandSelect = (params) => {
+  return getRequest('/business/brand/select', params);
+};
+
+export const brandList = (params) => {
+  return getRequest('/business/brand/search', params);
+};
+
+export const brandUpdate = (params) => {
+  return postJson('/business/brand/update', params);
+};

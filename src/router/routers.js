@@ -259,6 +259,7 @@ export default [
         meta: {
           title: '品牌编辑',
           notCache: true,
+          hideInMenu: true,
           icon: 'ios-settings'
         }
       },
